@@ -3,8 +3,6 @@ import { RootMovies } from "./interface/MoviesInterface.types";
 
 const FAKE_DELAY = 1500;
 
-const API_KEY = "4287ad07";
-
 // create a new axios instance
 const instance = axios.create({
   baseURL: `https://www.omdbapi.com/`,
@@ -26,13 +24,16 @@ const get = async <T>(query: string) => {
   return response.data;
 };
 
-export const getMovies = (Search: string) => {
+export const getMovies = async (Search: string): Promise<RootMovies> => {
   try {
-    const query = `?apikey=${API_KEY}&s=${Search}`;
-    const movieResponse = get<RootMovies>(query);
+    const query = `?i=tt3896198&apikey=${
+      import.meta.env.VITE_APIKEY
+    }&s=${Search}`;
+    const movieResponse = await get<RootMovies>(query);
     return movieResponse;
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
+/* http://www.omdbapi.com/?i=tt3896198&apikey={...} */
